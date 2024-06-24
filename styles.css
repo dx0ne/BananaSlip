@@ -1,0 +1,103 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.board {
+    background-color: #444;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(15, 32px);
+    grid-gap: 2px;
+    grid-row-gap: 2px; /* Reduced the row gap */
+}
+
+.cell {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 32px;
+    border-radius: 5px;
+}
+
+.cell.header {
+    background-color: #666;
+    font-weight: bold;
+}
+
+.sidebar {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.bonus, .score {
+    display: flex;
+    flex-direction: column;
+}
+
+.bonus-item, .score-item {
+    background-color: #555;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.cell point{
+    background-color: #666;
+    color: #fff;
+}
+.points-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.highlight {
+    box-sizing: border-box; /* Ensure border is inside */
+    border: 2px solid rgb(255, 255, 255); /* Example highlight style */
+}
+
+.marked {
+    border: 2px dotted red;
+    box-sizing: border-box; /* Ensure border is inside */
+}
+.starred {
+    position: relative; /* Ensure the parent is positioned */
+    z-index: 1; /* Set a higher z-index for the parent */
+    box-sizing: border-box; /* Ensure border is inside */
+}
+.starred::before {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" opacity="0.5"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.4 8.168L12 18.896l-7.334 3.869 1.4-8.168L.132 9.21l8.2-1.192z"/></svg>'); /* SVG star image with currentColor and opacity */
+    background-size: contain; /* Ensure the image fits within the element */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    content: '';
+    position: absolute; /* Position it absolutely within the parent */
+    width: 20px;
+    height: 20px;
+    pointer-events: none; /* Ensure the image does not interfere with click events */
+    z-index: -1; /* Set a lower z-index for the pseudo-element */
+}
+
+.cell.gp1 {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white" opacity="0.1"><circle cx="50" cy="50" r="50"/></svg>');
+    background-size: cover; /* Ensure the image covers the entire cell */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+}

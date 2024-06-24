@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Board</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="board">
+        <div class="grid">
+            <!-- Generate grid cells -->
+            <div class="cell header">A</div>
+            <div class="cell header">B</div>
+            <div class="cell header">C</div>
+            <div class="cell header">D</div>
+            <div class="cell header">E</div>
+            <div class="cell header">F</div>
+            <div class="cell header">G</div>
+            <div class="cell header">H</div>
+            <div class="cell header">I</div>
+            <div class="cell header">J</div>
+            <div class="cell header">K</div>
+            <div class="cell header">L</div>
+            <div class="cell header">M</div>
+            <div class="cell header">N</div>
+            <div class="cell header">O</div>
+            <!-- Add more cells as needed -->
+        </div>
+    </div>
+    
+    <div class="dice-roll-result">
+        <p>Dice Roll Result: <span id="diceResult">0</span></p>
+        <button id="rollDiceButton">Roll Dice</button>
+    </div>
+    
+    <div class="sidebar">
+        <div class="bonus">
+            <div class="bonus-item">5</div>
+            <div class="bonus-item">5</div>
+            <div class="bonus-item">5</div>
+            <div class="bonus-item">5</div>
+            <div class="bonus-item">5</div>
+        </div>
+        <div class="score">
+            <div class="score-item">BONUS =</div>
+            <div class="score-item">A-O +</div>
+            <div class="score-item">! (+1) +</div>
+            <div class="score-item">* (-2) -</div>
+            <div class="score-item">TOTAL =</div>
+        </div>
+        <button id="editModeToggle">Edit Mode</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
