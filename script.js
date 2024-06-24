@@ -9,7 +9,8 @@ function increaseSaturation(hex, percent) {
 }
 
 //const colors = ['#AECBFA', '#F8C8DC', '#FFF9C4', '#C8E6C9', '#FFE0B2', '#FFCDD2'].map(color => increaseSaturation(color, 70));
-const colors = ['#FEA444', '#FF7FAF', '#8AEE8C', '#669CFE', '#FFE249'];
+//const colors = ['#FEA444', '#FF7FAF', '#8AEE8C', '#669CFE', '#FFE249'];
+colors = ["#FFF101","#18C714","#E81228","#007ADC","#F46211"];
 console.log(colors);
 const grid = document.querySelector('.grid');
 const headers = grid.querySelectorAll('.header');
@@ -81,6 +82,8 @@ let cellCounter = -8; // Initialize a counter for cells
 let columnIndex=0;
 let rowIndex=0;
 headers.forEach((header, headerIndex) => {
+    header.style.pointerEvents = 'none';
+    header.style.userSelect = 'none';
     for (let i = 0; i < 7; i++) {
         const cell = document.createElement('div');
         cell.className = 'cell gp';
@@ -147,11 +150,30 @@ for (let i = 0; i < points.length; i++) {
     pointCell.className = 'cell header points';
     pointCell.textContent = points[i];
     pointCell.dataset.columnId = i;
+    pointCell.style.pointerEvents = 'none';
+    pointCell.style.userSelect = 'none';
     grid.appendChild(pointCell);
+}
+
+for (let i = 0; i < 8; i++) {
+    const pointCell = document.createElement('div');
+    pointCell.className = 'cell header usedWildcard';
+    pointCell.textContent = '🃏';
+    pointCell.dataset.columnId = i;
+    //pointCell.style.pointerEvents = 'none';
+    pointCell.style.cursor = 'pointer';
+    grid.appendChild(pointCell);
+    // Add a click event listener to the cell
+    pointCell.addEventListener('click', () => {
+        pointCell.textContent = pointCell.textContent === '🃏' ? '' : '🃏';
+        pointCell.style.cursor = 'default';
+        checkPoints();
+    });
 }
 
 function checkPoints(){
     const columns = 15; // Assuming there are 15 columns
+    let wholeColumnScore=0;
     for (let col = 0; col < columns; col++) {
         let allMarked = true;
         for (let i = 0; i < grid.children.length; i++) {
@@ -166,11 +188,15 @@ function checkPoints(){
                 const cell = grid.children[i];
                 if (cell.classList.contains('points') && cell.dataset.columnId == col) {
                     cell.classList.add('marked');
+                    wholeColumnScore+=parseInt(cell.textContent);
                 }
             }
         }
     }
+    document.getElementById('wholeColumn').textContent = '';
+    if(wholeColumnScore !== 0)document.getElementById('wholeColumn').textContent = wholeColumnScore;
 
+    let wholeColorScore=0;
     const bonusItems = document.querySelectorAll('.bonus-item');
     bonusItems.forEach((item, index) => {
         const color = colors[index % colors.length];
@@ -185,10 +211,33 @@ function checkPoints(){
         }
         if (allMarked) {
             item.classList.add('marked');
+            wholeColorScore+=parseInt(item.textContent);
         } else{
             item.classList.remove('marked');
         }
     });
+    document.getElementById('wholeColor').textContent = '';
+    if(wholeColorScore !== 0)document.getElementById('wholeColor').textContent = wholeColorScore;
+
+    let bonusFromUnusedWildcard=0;
+    const usedWildcardItems = document.querySelectorAll('.cell.header.usedWildcard');
+    usedWildcardItems.forEach((item, index) => {
+        if(item.textContent !== '')bonusFromUnusedWildcard+=1;
+    });
+    document.getElementById('bonusFromUnusedWildcard').textContent = '';
+    if(bonusFromUnusedWildcard !== 0)document.getElementById('bonusFromUnusedWildcard').textContent = bonusFromUnusedWildcard;
+
+    let starScore=0;
+    const starredCells = document.querySelectorAll('.cell.gp.starred');
+    starredCells.forEach(cell => {
+        if(cell.textContent !== markedSign)starScore+=2;
+    });
+    document.getElementById('penaltyForEmptyStars').textContent = '';
+    if(starScore !== 0)document.getElementById('penaltyForEmptyStars').textContent = starScore;
+
+    let totalScore=wholeColumnScore+wholeColorScore+bonusFromUnusedWildcard-starScore;
+    document.getElementById('total').textContent = '';
+    if(totalScore !== 0)document.getElementById('total').textContent = totalScore;
 }
 
 function addStars(){
@@ -210,7 +259,7 @@ document.getElementById('rollDiceButton').addEventListener('click', () => {
     const diceResultElement = document.getElementById('diceResult');
     diceResultElement.textContent = ''; // Clear current result
 
-    const diceFaces = [1, 2, 3, 4, 5, '⭐'];
+    const diceFaces = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '*️⃣'];
     const colorFaces = ['🔵', '🔴', '🟠', '🟡', '🟢', '🌈'];
 
     const rollDice = (faces) => faces[Math.floor(Math.random() * faces.length)];
@@ -222,4 +271,6 @@ document.getElementById('rollDiceButton').addEventListener('click', () => {
     }
 
     diceResultElement.textContent = results.join(' ');
+    const turnCountElement = document.getElementById('turnCount');
+    turnCountElement.textContent = parseInt(turnCountElement.textContent) - 1;
 });
